@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+// Update this path as needed
+import { useNavigate } from "react-router-dom"; // Import if you're using react-router
+import { AuthContext } from "../context/AuthContext";
 
 function SignIn() {
   const [formData, setFormData] = useState({ name: "", password: "" });
   const [error, setError] = useState("");
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate(); // Remove if not using react-router
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,26 +18,35 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `http://localhost:8384/api/auth/login?name=${encodeURIComponent(formData.name)}&password=${encodeURIComponent(formData.password)}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.post("http://localhost:8384/api/auth/login", null, {
+        params: {
+          name: formData.name,
+          password: formData.password,
+        },
+        headers: { "Content-Type": "application/json" },
+      });
 
-      if (!response.ok) {
-        throw new Error("Invalid credentials! Please try again.");
-      }
+      // Extract user data from the response
+      const userData = {
+        id: response.data.user,
+        name: formData.name
+      };
 
-      const data = await response.json();
+      // Call the login function from AuthContext
+      login(userData);
+      
+      // Display success message
       alert("Login successful!");
-      console.log("User data:", data);
+      console.log("User data:", response.data);
 
+      // Reset form
       setFormData({ name: "", password: "" });
       setError("");
+      
+      // Redirect user after successful login (if using react-router)
+      navigate("/dashboard"); // Remove if not using react-router or change path as needed
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || "Invalid credentials! Please try again.");
     }
   };
 
