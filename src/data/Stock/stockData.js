@@ -9,6 +9,8 @@ const growthData = [
         max: 2000,
         companyName: "HDFC Bank",
         stockExchange: "BSE",
+        quantity: 5,
+        invested: 8100
     },
     {
         code: "RELIANCE",
@@ -20,6 +22,8 @@ const growthData = [
         max: 2900,
         companyName: "Reliance Industries",
         stockExchange: "NSE",
+        quantity: 3,
+        invested: 8160
     },
     {
         code: "TCS",
@@ -31,6 +35,8 @@ const growthData = [
         max: 4000,
         companyName: "Tata Consultancy Services",
         stockExchange: "BSE",
+        quantity: 4,
+        invested: 15120
     },
     {
         code: "INFY",
@@ -42,6 +48,8 @@ const growthData = [
         max: 1550,
         companyName: "Infosys",
         stockExchange: "NSE",
+        quantity: 6,
+        invested: 8880
     },
     {
         code: "ICICIBANK",
@@ -53,6 +61,8 @@ const growthData = [
         max: 1200,
         companyName: "ICICI Bank",
         stockExchange: "BSE",
+        quantity: 7,
+        invested: 7840
     },
     {
         code: "SBIN",
@@ -64,6 +74,8 @@ const growthData = [
         max: 700,
         companyName: "State Bank of India",
         stockExchange: "NSE",
+        quantity: 10,
+        invested: 6600
     },
     {
         code: "HINDUNILVR",
@@ -75,6 +87,8 @@ const growthData = [
         max: 2800,
         companyName: "Hindustan Unilever",
         stockExchange: "BSE",
+        quantity: 2,
+        invested: 5200
     },
     {
         code: "WIPRO",
@@ -86,6 +100,8 @@ const growthData = [
         max: 480,
         companyName: "Wipro",
         stockExchange: "NSE",
+        quantity: 12,
+        invested: 5280
     }
 ];
 

@@ -4,8 +4,6 @@ import authorsData from '../../data/tables/Authors';
 import TableItem from './AdminTableItem';
 
 
-
-
 const AdminTable = () => {
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>

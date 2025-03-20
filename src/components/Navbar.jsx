@@ -13,12 +13,10 @@ export const Navbar = ({ toggleSidebar }) => {
 
   const pathNameMap = {
     '/dashboard': 'Dashboard',
-    '/billing': 'Billing',
-    '/tables': 'Tables',
-    '/virtual-reality': 'Virtual Reality',
-    '/profile': 'Profile',
-    '/signup': 'Sign Up',
-    '/signin':'Sign In'
+    '/orders': 'Orders',
+    '/holdings': 'Holdings',
+    '/watchlist': 'Watchlist',
+    '/funds': 'Funds',
     // Add other routes as needed
   };
 

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import SidePanel from './components/SidePanel';
 import { Navbar } from './components/Navbar';
 import Dashboard from './pages/Dashboard';
+import Holdings from './pages/Holdings';
+import Watchlist from './pages/Watchlist';
 
 function App() {
 
@@ -37,6 +39,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/holdings" element={<Holdings />} />
+                <Route path="/watchlist" element={<Watchlist />} />
               </Routes>
             </div>
         </div>
