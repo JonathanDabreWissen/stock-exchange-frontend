@@ -5,6 +5,8 @@ import { Navbar } from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Holdings from './pages/Holdings';
 import Watchlist from './pages/Watchlist';
+import Funds from './pages/Funds';
+import SingInPage from './pages/SingInPage';
 
 function App() {
 
@@ -41,6 +43,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/holdings" element={<Holdings />} />
                 <Route path="/watchlist" element={<Watchlist />} />
+                <Route path="/funds" element={<Funds/>} />
+                <Route path="/sign-in" element={<SingInPage/>} />
               </Routes>
             </div>
         </div>

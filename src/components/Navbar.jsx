@@ -4,7 +4,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { FaSearch } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { TbLayoutSidebarLeftExpandFilled } from "react-icons/tb";
 
 
@@ -17,6 +17,7 @@ export const Navbar = ({ toggleSidebar }) => {
     '/holdings': 'Holdings',
     '/watchlist': 'Watchlist',
     '/funds': 'Funds',
+    '/sing-in': 'Sign In',
     // Add other routes as needed
   };
 
@@ -47,10 +48,12 @@ export const Navbar = ({ toggleSidebar }) => {
               </div>
             </div>
             <div className='flex space-x-3 md:space-x-4'>
-              <div className='flex items-center text-xl md:text-lg space-x-1 cursor-pointer'>
-                <FaUserCircle className={textColorClass} />
-                <span className={` hidden md:flex text-[14px] font-semibold ${textColorClass}`}>Sign in</span>
-              </div>
+                <Link to="/sign-in">
+                    <div className='flex items-center text-xl md:text-lg space-x-1 cursor-pointer'>
+                        <FaUserCircle className={textColorClass} />
+                        <span className={` hidden md:flex text-[14px] font-semibold ${textColorClass}`}>Sign in</span>
+                    </div>
+                </Link>
               <div className={`toggleSidebar-button ${textColorClass} text-2xl md:text-lg flex items-center md:hidden`} onClick={toggleSidebar}>
                 <TbLayoutSidebarLeftExpandFilled />
               </div>

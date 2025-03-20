@@ -40,7 +40,7 @@ const SidePanel = () => {
     // Add other routes as needed
   };
 
-  const currentPathName = pathNameMap[location.pathname] || 'Dashboard';
+  const currentPathName = pathNameMap[location.pathname] ;
 
 
   return (
