@@ -9,6 +9,7 @@ import Funds from './pages/Funds';
 import SingInPage from './pages/SingInPage';
 import ProtectedRoute from './routes/ProtectedRoute'; // Update the path as needed
 import { AuthContext } from './context/AuthContext';
+import WebSocketComponent from './components/WebSocketComponent';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
