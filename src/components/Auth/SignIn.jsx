@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
-// Update this path as needed
-import { useNavigate } from "react-router-dom"; // Import if you're using react-router
-import { AuthContext } from "../context/AuthContext";
+import api from "../../api"; // Import your Axios instance
+import { useNavigate } from "react-router-dom"; // Import if using react-router
+import { AuthContext } from "../../context/AuthContext";
 
 function SignIn() {
   const [formData, setFormData] = useState({ name: "", password: "" });
@@ -18,23 +17,26 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8384/api/auth/login", null, {
+      const response = await api.post("/api/auth/login", null, {
         params: {
           name: formData.name,
           password: formData.password,
         },
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true"  // Add this
+        },
       });
 
       // Extract user data from the response
       const userData = {
         id: response.data.user,
-        name: formData.name
+        name: formData.name,
       };
 
       // Call the login function from AuthContext
       login(userData);
-      
+
       // Display success message
       alert("Login successful!");
       console.log("User data:", response.data);
@@ -42,21 +44,23 @@ function SignIn() {
       // Reset form
       setFormData({ name: "", password: "" });
       setError("");
-      
-      // Redirect user after successful login (if using react-router)
-      navigate("/dashboard"); // Remove if not using react-router or change path as needed
+
+      // Redirect user after successful login
+      navigate("/dashboard");
     } catch (error) {
       setError(error.response?.data?.message || "Invalid credentials! Please try again.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white p-8 rounded-2xl w-full max-w-sm">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -69,7 +73,9 @@ function SignIn() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -83,10 +89,7 @@ function SignIn() {
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-          <button
-            type="submit"
-            className="w-full bg-light-blue text-white font-medium py-2 rounded-md bg-[#17C1E8] transition"
-          >
+          <button type="submit" className="w-full bg-light-blue text-white font-medium py-2 rounded-md bg-[#17C1E8] transition">
             Login
           </button>
         </form>

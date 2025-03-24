@@ -1,6 +1,5 @@
 import React from 'react'
-import WatchListTable from '../components/WatchListTable'
-import HoldingsTable from '../components/HoldingsTable'
+import HoldingsTable from '../components/Holdings/HoldingsTable'
 
 const Holdings = () => {
   return (

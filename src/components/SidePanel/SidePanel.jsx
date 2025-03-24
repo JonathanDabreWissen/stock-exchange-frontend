@@ -4,8 +4,8 @@ import { MdOutlineAutoGraph } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import SidePanelItem from './SidePanelItem';
-import sidePanelData from '../data/SidePanel/SidePanel'
-import accountPagesData from '../data/SidePanel/AccountPages';
+import sidePanelData from '../../data/SidePanel/SidePanel'
+import accountPagesData from '../../data/SidePanel/AccountPages';
 import { useLocation } from 'react-router-dom';
 
 

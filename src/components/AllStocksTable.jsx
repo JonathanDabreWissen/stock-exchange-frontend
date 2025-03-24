@@ -1,14 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import stockData from '../data/Stock/stockData';
-import WatchListTableItem from './WatchListTableItem';
+import WatchListTableItem from './Watchlist/WatchListTableItem';
+import api from '../api';
 
 const AllStocksTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sharesData, setSharesData] = useState([]);
 
   const filteredStocks = stockData.filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     stock.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    const fetchStocks = async () => {
+      try {
+        const response = await api.get('/shares/view', {
+          headers: {
+            "ngrok-skip-browser-warning": "true", // Ngrok header to bypass warning
+          },
+        });
+        console.log("Fetched Stock Data:", response.data); // Console log response
+        setSharesData(response.data); // Set state with API response
+        console.log(sharesData)
+      } catch (error) {
+        console.error("Error fetching stocks:", error);
+      }
+    };
+
+    fetchStocks();
+  }, []);
 
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>

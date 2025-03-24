@@ -1,5 +1,5 @@
 import React from 'react'
-import WatchListTable from '../components/WatchListTable'
+import WatchListTable from '../components/Watchlist/WatchListTable'
 
 const Watchlist = () => {
   return (

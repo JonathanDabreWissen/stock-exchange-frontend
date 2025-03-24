@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import stockData from '../data/Stock/stockData';
+import stockData from '../../data/Stock/stockData';
 import HoldingsTableItem from './HoldingsTableItem';
 
 const HoldingsTable = () => {

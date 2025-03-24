@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import SidePanel from './components/SidePanel';
+import SidePanel from './components/SidePanel/SidePanel';
 import { Navbar } from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Holdings from './pages/Holdings';

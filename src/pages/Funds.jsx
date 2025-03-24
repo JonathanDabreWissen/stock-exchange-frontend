@@ -1,5 +1,5 @@
 import React from 'react'
-import FundsInvoice from '../components/FundsInvoice'
+import FundsInvoice from '../components/Funds/FundsInvoice'
 
 const Funds = () => {
   return (

@@ -5,7 +5,7 @@ import { GrowthItem } from './GrowthItem'
 
 
 
-export const Growth = () => {
+const Growth = () => {
 
   return (
     <div className='w-[100%]'>
@@ -22,3 +22,5 @@ export const Growth = () => {
     </div>
   )
 }
+
+export default Growth;

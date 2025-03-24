@@ -1,6 +1,5 @@
 import React from 'react'
-import { Growth } from '../components/Growth'
-import StockTable from '../components/WatchListTable'
+import Growth  from '../components/Growth'
 import AllStocksTable from '../components/AllStocksTable'
 
 const Dashboard = () => {
