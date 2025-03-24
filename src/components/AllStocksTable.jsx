@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import stockData from '../data/Stock/stockData';
 import WatchListTableItem from './Watchlist/WatchListTableItem';
 import api from '../api';
 
 const AllStocksTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sharesData, setSharesData] = useState([]);
+  const [selectedStock, setSelectedStock] = useState(null); // Store selected stock code
 
-  const filteredStocks = stockData.filter(stock =>
+  const filteredStocks = sharesData.filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     stock.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -20,9 +20,8 @@ const AllStocksTable = () => {
             "ngrok-skip-browser-warning": "true", // Ngrok header to bypass warning
           },
         });
-        console.log("Fetched Stock Data:", response.data); // Console log response
+        // console.log("Fetched Stock Data:", response.data); // Console log response
         setSharesData(response.data); // Set state with API response
-        console.log(sharesData)
       } catch (error) {
         console.error("Error fetching stocks:", error);
       }
@@ -30,6 +29,43 @@ const AllStocksTable = () => {
 
     fetchStocks();
   }, []);
+
+
+  // Toggle stock selection
+  const toggleStockSelection = (code) => {
+    setSelectedStock(selectedStock === code ? null : code);
+  };
+
+  const handleAddWatchlistClick = (stockCode) => {
+    const storedUser = localStorage.getItem("user");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null; // Parse the JSON string
+    const userId = String(parsedUser.id); //
+    console.log(`${stockCode} to be watchlisted`);
+
+
+    const addWatchlist = async ()=>{
+      try {
+        const response = await api.post("/watchlist/add", null, {
+          params: {
+            userId: userId,
+            shareId: stockCode,
+          },
+          headers: { 
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true"  // Add this
+          },
+        });
+
+        console.log(response);
+        alert(`${stockCode} ${response.data}`)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    addWatchlist();
+  };
 
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
@@ -57,18 +93,26 @@ const AllStocksTable = () => {
           </div>
           <div>
             {filteredStocks.map((stock, index) => (
-              <WatchListTableItem
-                key={index}
-                code={stock.code}
-                companyName={stock.companyName}
-                price={stock.price}
-                min={stock.min}
-                max={stock.max}
-                growth={stock.growth}
-                priceChange={stock.priceChange}
-                precentageChange={stock.percentageChange}
-                stockExchange={stock.stockExchange}
-              />
+              <div key={index} onClick={() => toggleStockSelection(stock.code)} className="cursor-pointer">
+                <WatchListTableItem
+                  code={stock.code}
+                  companyName={stock.companyName}
+                  price={stock.price}
+                  min={stock.minPrice}
+                  max={stock.maxPrice}
+                  growth={stock.growth}
+                  priceChange={stock.priceChange}
+                  precentageChange={stock.percentageChange}
+                  stockExchange={stock.stockExchange || 'BSE'}
+                />
+                {/* Show buttons if the stock is selected */}
+                {selectedStock === stock.code && (
+                  <div className="flex gap-2 my-4 px-4">
+                    <button onClick={()=> handleAddWatchlistClick(stock.code)} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">WATCHLIST</button>
+                    <button className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">BUY</button>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>

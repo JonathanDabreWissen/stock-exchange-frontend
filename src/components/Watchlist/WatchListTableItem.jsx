@@ -19,7 +19,7 @@ const WatchListTableItem = ({ code, companyName, price, min, max, stockExchange 
         newPrice = parseFloat((Math.random() * (max - min) + min).toFixed(2));
         priceDiff = newPrice - stockPrice;
         percentageChange = ((priceDiff / stockPrice) * 100);
-      } while (Math.abs(percentageChange) > 10); // Restrict to ±10%
+      } while (Math.abs(percentageChange) > 1); // Restrict to ±10%
 
       setPreviousPrice(stockPrice);
       setStockPrice(newPrice);

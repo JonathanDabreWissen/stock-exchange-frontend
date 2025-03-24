@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { IoMdHome } from "react-icons/io";
 import { FaUserCircle } from 'react-icons/fa';
 import { FaSearch } from "react-icons/fa";
@@ -6,10 +6,17 @@ import { IoIosSettings } from "react-icons/io";
 import { FaBell } from "react-icons/fa";
 import { Link, useLocation } from 'react-router-dom';
 import { TbLayoutSidebarLeftExpandFilled } from "react-icons/tb";
+import { AuthContext } from '../context/AuthContext';
 
 
 export const Navbar = ({ toggleSidebar }) => {
   const location = useLocation();
+  const { logout } = useContext(AuthContext); 
+
+  const handleSignoutClick = ()=>{
+    logout();
+    window.location.reload();
+  }
 
   const pathNameMap = {
     '/dashboard': 'Dashboard',
@@ -48,12 +55,12 @@ export const Navbar = ({ toggleSidebar }) => {
               </div>
             </div>
             <div className='flex space-x-3 md:space-x-4'>
-                <Link to="/sign-in">
+                <button className='' onClick={handleSignoutClick}>
                     <div className='flex items-center text-xl md:text-lg space-x-1 cursor-pointer'>
                         <FaUserCircle className={textColorClass} />
-                        <span className={` hidden md:flex text-[14px] font-semibold ${textColorClass}`}>Sign in</span>
+                        <span className={` hidden md:flex text-[14px] font-semibold ${textColorClass}`}>Sign out</span>
                     </div>
-                </Link>
+                </button>
               <div className={`toggleSidebar-button ${textColorClass} text-2xl md:text-lg flex items-center md:hidden`} onClick={toggleSidebar}>
                 <TbLayoutSidebarLeftExpandFilled />
               </div>
