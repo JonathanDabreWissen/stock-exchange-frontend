@@ -12,6 +12,8 @@ const HoldingsTable = () => {
   const [sharesData, setSharesData] = useState([]);
   const [heldSharesData, setHeldSharesData] = useState([]);
 
+  const [selectedStock, setSelectedStock] = useState(null);
+
   const { data: holdingsData } = useGetData(`/holdings/${userId}`);
   const { data: allSharesData } = useGetData(`/shares/view`);
   
@@ -45,6 +47,12 @@ const HoldingsTable = () => {
   );
 
 
+  // Toggle stock selection
+  const toggleStockSelection = (code) => {
+    setSelectedStock(selectedStock === code ? null : code);
+  };
+
+
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
       <div className="flex justify-between px-4">
@@ -73,16 +81,25 @@ const HoldingsTable = () => {
           </div>
           <div>
             {filteredStocks.map((stock, index) => (
-              <HoldingsTableItem
-                key={index}
-                code={stock.code}
-                companyName={stock.companyName}
-                quantity = {stock.quantity}
-                invested = {stock.price}
-                min={stock.minPrice}
-                max={stock.maxPrice}
-                stockExchange={stock.stockExchange || "BSE"}
-              />
+              <div key={index} onClick={() => toggleStockSelection(stock.code)} className="cursor-pointer">
+                <HoldingsTableItem
+                  code={stock.code}
+                  companyName={stock.companyName}
+                  quantity = {stock.quantity}
+                  invested = {stock.price}
+                  min={stock.minPrice}
+                  max={stock.maxPrice}
+                  stockExchange={stock.stockExchange || "BSE"}
+                />
+                {/* Show buttons if the stock is selected */}
+                {selectedStock === stock.code && (
+                  <div className="flex gap-2 my-4 px-4">
+                    <button className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">BUY MORE</button>
+                    <button className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">SELL</button>
+                  </div>
+                )}
+
+              </div>
             ))}
           </div>
         </div>
