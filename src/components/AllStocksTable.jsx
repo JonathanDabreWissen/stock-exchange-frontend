@@ -1,11 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import WatchListTableItem from './Watchlist/WatchListTableItem';
 import api from '../api';
+import { AuthContext } from '../context/AuthContext';
+import usePostData from '../hooks/usePostData';
 
 const AllStocksTable = () => {
+
+  const { user } = useContext(AuthContext);
+  const userId = String(user.id);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [sharesData, setSharesData] = useState([]);
-  const [selectedStock, setSelectedStock] = useState(null); // Store selected stock code
+  const [selectedStock, setSelectedStock] = useState(null); 
+  const [shareToBuy, setShareToBuy] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quantityInput, setQuantityInput] = useState("");
+  
+
+  const { addData } = usePostData("/trade/buy");
 
   const filteredStocks = sharesData.filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -31,15 +43,43 @@ const AllStocksTable = () => {
   }, []);
 
 
+  const openModal = (stockCode) => {
+    setShareToBuy(stockCode);
+    console.log(`Open modal for ${stockCode}`)
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setQuantityInput("");
+    setShareToBuy("");
+  };
+
   // Toggle stock selection
   const toggleStockSelection = (code) => {
     setSelectedStock(selectedStock === code ? null : code);
   };
 
+  const handleBuyShare = async ()=>{
+    const shareData = {
+      userId:Number(userId),
+      shareCode: shareToBuy,
+      quantity:Number(quantityInput)
+    }; 
+
+    const response = await addData(shareData);
+
+    if(response){
+      alert("Order placed successfully")
+    }
+    else{
+        alert("Something went wrong");
+    }
+
+    closeModal();
+  }
+
   const handleAddWatchlistClick = (stockCode) => {
-    const storedUser = localStorage.getItem("user");
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null; // Parse the JSON string
-    const userId = String(parsedUser.id); //
     console.log(`${stockCode} to be watchlisted`);
 
 
@@ -109,7 +149,7 @@ const AllStocksTable = () => {
                 {selectedStock === stock.code && (
                   <div className="flex gap-2 my-4 px-4">
                     <button onClick={()=> handleAddWatchlistClick(stock.code)} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">WATCHLIST</button>
-                    <button className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">BUY</button>
+                    <button onClick={()=>openModal(stock.code)} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">BUY</button>
                   </div>
                 )}
               </div>
@@ -117,6 +157,24 @@ const AllStocksTable = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-2xl w-96">
+            <h2 className="text-lg font-semibold mb-4 text-[#3A416F]">{shareToBuy}</h2>
+            <input
+              type="number"
+              placeholder="Enter Quantity"
+              className="w-full px-5 py-3 border focus:outline-none focus:ring-1 focus:ring-[#3A416F] text-sm rounded-lg mb-4"
+              value={quantityInput}
+              onChange={(e) => setQuantityInput(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button className="px-4 py-2 bg-[#3A416F] text-white rounded-lg" onClick={closeModal}>Cancel</button>
+              <button className="px-4 py-2 bg-[#17C1E8] text-white rounded-lg" onClick={handleBuyShare}>Buy</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

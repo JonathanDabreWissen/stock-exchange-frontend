@@ -48,9 +48,9 @@ function App() {
                   <Route path="/funds" element={<Funds/>} />
                 </Route>
                 <Route path="/sign-in" element={
-                  user ? <Navigate to="/funds" replace /> : <SingInPage />
+                  user ? <Navigate to="/holdings" replace /> : <SingInPage />
                 } />
-                <Route path="*" element={<Navigate to="/funds" replace />} />
+                <Route path="*" element={<Navigate to="/holdings" replace />} />
               </Routes>
             </div>
           </div>
