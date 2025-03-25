@@ -4,7 +4,7 @@ import FundsInvoice from '../components/Funds/FundsInvoice'
 const Funds = () => {
   return (
     <div>
-        <FundsInvoice amount={45000}/>
+        <FundsInvoice/>
     </div>
   )
 }
