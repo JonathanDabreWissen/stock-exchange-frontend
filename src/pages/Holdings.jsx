@@ -6,7 +6,6 @@ const Holdings = () => {
   return (
     <div>
         <HoldingsTable/>
-        {/* <LoadingContainer/> */}
     </div>
   )
 }

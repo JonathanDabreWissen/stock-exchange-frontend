@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import usePostData from '../hooks/usePostData';
 import useGetData from '../hooks/useGetData';
 
+
 const AllStocksTable = () => {
 
   const { user } = useContext(AuthContext);
@@ -21,37 +22,17 @@ const AllStocksTable = () => {
   const { addData } = usePostData("/trade/buy");
   const { data: allSharesData } = useGetData(`/shares/view`);
 
-  const filteredStocks = sharesData.filter(stock =>
+  const filteredStocks = (sharesData ?? []).filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     stock.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  
   useEffect(() => {
     console.log(allSharesData)
     setSharesData(allSharesData)
   }, [allSharesData])
 
-
-  /*
-  useEffect(() => {
-    const fetchStocks = async () => {
-      try {
-        const response = await api.get('/shares/view', {
-          headers: {
-            "ngrok-skip-browser-warning": "true", // Ngrok header to bypass warning
-          },
-        });
-        // console.log("Fetched Stock Data:", response.data); // Console log response
-        setSharesData(response.data); // Set state with API response
-      } catch (error) {
-        console.error("Error fetching stocks:", error);
-      }
-    };
-
-    fetchStocks();
-  }, []);
-
-  */
 
 
   const openModal = (stockCode) => {

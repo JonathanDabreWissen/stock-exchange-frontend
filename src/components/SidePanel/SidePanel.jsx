@@ -5,8 +5,9 @@ import { FaStar } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import SidePanelItem from './SidePanelItem';
 import sidePanelData from '../../data/SidePanel/SidePanel'
-import accountPagesData from '../../data/SidePanel/AccountPages';
+
 import { useLocation } from 'react-router-dom';
+import adminPagesData from '../../data/SidePanel/AdminPages';
 
 
 const SidePanel = () => {
@@ -66,7 +67,7 @@ const SidePanel = () => {
         </div>
         <div className="account-pages-heading text-[#828FA2] text-[0.75rem] px-4 mt-3 font-semibold">ADMIN PAGES</div>
         <div className="sidePanel-items flex flex-col pt-3 items-start">
-          {accountPagesData.map(item => (
+          {adminPagesData.map(item => (
             <SidePanelItem
               key={item.id}
               icon={item.icon}

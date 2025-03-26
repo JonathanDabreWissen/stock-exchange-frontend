@@ -3,6 +3,7 @@ import HoldingsTableItem from './HoldingsTableItem';
 import useGetData from '../../hooks/useGetData';
 import { AuthContext } from '../../context/AuthContext';
 import usePostData from '../../hooks/usePostData';
+import LoadingContainer from '../utils/LoadingContainer';
 
 const HoldingsTable = () => {
 
@@ -20,8 +21,8 @@ const HoldingsTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [quantityInput, setQuantityInput] = useState("");
 
-  const { data: holdingsData, refetch:refetchHoldingsData } = useGetData(`/holdings/${userId}`);
-  const { data: allSharesData } = useGetData(`/shares/view`);
+  const { data: holdingsData, loading:holdingsDataLoading, refetch:refetchHoldingsData } = useGetData(`/holdings/${userId}`);
+  const { data: allSharesData, loading:allSharesLoading } = useGetData(`/shares/view`);
   const { addData } = usePostData("/trade/buy");
   const { addData:sellShare } = usePostData("/trade/sell");
   
@@ -104,7 +105,7 @@ const HoldingsTable = () => {
 
   const openModal = (stockCode, typeOfTransaction) => {
     setTransactionType(typeOfTransaction);
-    
+
     if(typeOfTransaction === "Buy"){
       setShareToBuy(stockCode);
     }
@@ -121,6 +122,9 @@ const HoldingsTable = () => {
     setShareToBuy("");
   };
 
+  if(allSharesLoading || holdingsDataLoading){
+    return (<LoadingContainer/>)
+  }
 
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>

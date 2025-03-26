@@ -6,7 +6,7 @@ import { RiFileList3Fill } from "react-icons/ri";
 
 
 
-const accountPagesData = [
+const adminPagesData = [
     {
         id: 1,
         icon: RiFileList3Fill,  // ✅ Pass reference, not JSX
@@ -33,4 +33,4 @@ const accountPagesData = [
     }
 ];
 
-export default accountPagesData;
+export default adminPagesData;
