@@ -4,6 +4,8 @@ import WatchListTableItem from './WatchListTableItem';
 import api from '../../api';
 import usePostData from '../../hooks/usePostData';
 import { AuthContext } from '../../context/AuthContext';
+import useGetData from '../../hooks/useGetData';
+import LoadingContainer from '../utils/LoadingContainer';
 
 const WatchListTable = () => {
   const { user } = useContext(AuthContext);
@@ -18,58 +20,25 @@ const WatchListTable = () => {
   const [quantityInput, setQuantityInput] = useState("");
 
   const { addData } = usePostData("/trade/buy");
+  const { data: allSharesData, loading:allSharesLoading } = useGetData(`/shares/view`);
+  const { data: watchlistSharesData, loading:allWatchlistSharesLoading } = useGetData(`/watchlist/${userId}`);
 
-  const filteredWatchlistStocks = sharesData.filter(stock =>
-    watchlistData.some(watchlistItem => watchlistItem.shareId === stock.code)
+  useEffect(() => {
+    setSharesData(allSharesData)
+  }, [allSharesData])
+
+  useEffect(() => {
+    setWatchlistData(watchlistSharesData)
+  }, [watchlistSharesData])
+
+  const filteredWatchlistStocks = (sharesData||[]).filter(stock =>
+    (watchlistData||[]).some(watchlistItem => watchlistItem.shareId === stock.code)
   );
 
   const filteredStocks = filteredWatchlistStocks.filter(stock =>
     stock.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null; // Parse the JSON string
-
-    console.log("Stored User:", parsedUser);
-
-    const fetchStocks = async () => {
-      try {
-        const response = await api.get('/shares/view', {
-          headers: {
-            "ngrok-skip-browser-warning": "true", // Ngrok header to bypass warning
-          },
-        });
-        console.log("Fetched Stock Data:", response.data); // Console log response
-        setSharesData(response.data); // Set state with API response
-      } catch (error) {
-        console.error("Error fetching stocks:", error);
-      }
-    };
-
-
-    const fetchWatchlist = async ()=>{
-      if (!parsedUser || !parsedUser.id) {
-        console.error("User not found in localStorage or ID is missing.");
-        return;
-      }
-
-      const userId = String(parsedUser.id); //
-
-      const response = await api.get(`/watchlist/${userId}`,{
-        headers: {
-          "ngrok-skip-browser-warning": "true", // Ngrok header to bypass warning
-        },
-      });
-      console.log("Fetched Watchlist Data:", response.data); // Console log response
-      setWatchlistData(response.data);
-    }
-
-    fetchStocks();
-    fetchWatchlist();
-
-  }, []);
 
   const handleRemoveWatchlistClick = (stockCode) => {
     const storedUser = localStorage.getItem("user");
@@ -143,6 +112,10 @@ const WatchListTable = () => {
     closeModal();
   }
 
+
+  if(allSharesLoading || allWatchlistSharesLoading){
+    return (<LoadingContainer/>)
+  }
   
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
@@ -172,7 +145,6 @@ const WatchListTable = () => {
                 <WatchListTableItem
                   code={stock.code}
                   companyName={stock.companyName}
-                  price={stock.price}
                   min={stock.minPrice}
                   max={stock.maxPrice}
                   growth={stock.growth}

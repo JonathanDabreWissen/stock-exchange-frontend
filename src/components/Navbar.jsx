@@ -25,7 +25,8 @@ export const Navbar = ({ toggleSidebar }) => {
     '/watchlist': 'Watchlist',
     '/funds': 'Funds',
     '/sing-in': 'Sign In',
-    '/list-stocks': 'List of Stocks'
+    '/list-stocks': 'List of Stocks',
+    '/add-stock': 'Add Stock'
     // Add other routes as needed
   };
 

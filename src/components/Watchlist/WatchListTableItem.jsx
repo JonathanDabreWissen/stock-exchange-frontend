@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const WatchListTableItem = ({ code, companyName, price, min, max, stockExchange }) => {
+const WatchListTableItem = ({ code, companyName, min, max, stockExchange }) => {
   
-  const [stockPrice, setStockPrice] = useState(price);
+  const [stockPrice, setStockPrice] = useState(parseFloat((Math.random() * (max - min) + min).toFixed(2)));
   // eslint-disable-next-line no-unused-vars
-  const [previousPrice, setPreviousPrice] = useState(price);
+  const [previousPrice, setPreviousPrice] = useState(stockPrice);
   const [stockPriceChange, setStockPriceChange] = useState(0);
   const [percentageStockPriceChange, setPercentageStockPriceChange] = useState(0);
   const [growthPositive, setGrowthPositive] = useState(null);
@@ -28,7 +28,7 @@ const WatchListTableItem = ({ code, companyName, price, min, max, stockExchange 
       setPercentageStockPriceChange(percentageChange.toFixed(2));
 
       setGrowthPositive(priceDiff > 0);
-    }, 5000); // Runs every 5 seconds
+    }, 2000); // Runs every 2 seconds
 
     return () => clearInterval(interval);
   }, [stockPrice, min, max]);

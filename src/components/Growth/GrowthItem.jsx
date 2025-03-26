@@ -15,7 +15,7 @@ export const GrowthItem = ({ title, number, growth }) => {
                         </span>
                     </div>
                 </div>
-                <div className='w-fit p-3 xl:p-[16px] h-fit rounded-[6px] bg-gradient-to-br from-[#21CDFD] to-[#1F61F1]'>
+                <div className='w-fit p-3 xl:p-[16px] h-fit rounded-[6px] bg-[#344767]'>
                     <div className='flex items-center justify-center text-white text-[17px]'>
                         <TbGraphFilled />
                     </div>

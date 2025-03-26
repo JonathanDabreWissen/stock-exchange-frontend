@@ -4,6 +4,7 @@ import api from '../api';
 import { AuthContext } from '../context/AuthContext';
 import usePostData from '../hooks/usePostData';
 import useGetData from '../hooks/useGetData';
+import LoadingContainer from './utils/LoadingContainer';
 
 
 const AllStocksTable = () => {
@@ -20,7 +21,7 @@ const AllStocksTable = () => {
   
 
   const { addData } = usePostData("/trade/buy");
-  const { data: allSharesData } = useGetData(`/shares/view`);
+  const { data: allSharesData, loading:allSharesLoading } = useGetData(`/shares/view`);
 
   const filteredStocks = (sharesData ?? []).filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -29,7 +30,7 @@ const AllStocksTable = () => {
 
   
   useEffect(() => {
-    console.log(allSharesData)
+    // console.log(allSharesData)
     setSharesData(allSharesData)
   }, [allSharesData])
 
@@ -99,6 +100,9 @@ const AllStocksTable = () => {
     addWatchlist();
   };
 
+  if(allSharesLoading ){
+    return (<LoadingContainer/>)
+  }
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
       <div className="flex justify-between px-4">

@@ -11,6 +11,7 @@ import ProtectedRoute from './routes/ProtectedRoute'; // Update the path as need
 import { AuthContext } from './context/AuthContext';
 import WebSocketComponent from './components/WebSocketComponent';
 import ListStocks from './pages/Admin/ListStocks';
+import AddStock from './pages/Admin/AddStock';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/funds" element={<Funds/>} />
                   {/* Admin Routes */}
                   <Route path="/list-stocks" element={<ListStocks/>} />
+                  <Route path="/add-stock" element={<AddStock/>} />
                 </Route>
                 <Route path="/sign-in" element={
                   user ? <Navigate to="/dashboard" replace /> : <SingInPage />
