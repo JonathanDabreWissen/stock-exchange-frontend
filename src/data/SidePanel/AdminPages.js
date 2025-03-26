@@ -10,8 +10,8 @@ const adminPagesData = [
     {
         id: 1,
         icon: RiFileList3Fill,  // ✅ Pass reference, not JSX
-        optionName: "List Stock",
-        path: "/add-stock"
+        optionName: "List Stocks",
+        path: "/list-stocks"
     },
     {
         id: 2,

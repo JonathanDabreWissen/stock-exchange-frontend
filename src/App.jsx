@@ -10,6 +10,7 @@ import SingInPage from './pages/SingInPage';
 import ProtectedRoute from './routes/ProtectedRoute'; // Update the path as needed
 import { AuthContext } from './context/AuthContext';
 import WebSocketComponent from './components/WebSocketComponent';
+import ListStocks from './pages/Admin/ListStocks';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -46,6 +47,8 @@ function App() {
                   <Route path="/holdings" element={<Holdings />} />
                   <Route path="/watchlist" element={<Watchlist />} />
                   <Route path="/funds" element={<Funds/>} />
+                  {/* Admin Routes */}
+                  <Route path="/list-stocks" element={<ListStocks/>} />
                 </Route>
                 <Route path="/sign-in" element={
                   user ? <Navigate to="/dashboard" replace /> : <SingInPage />

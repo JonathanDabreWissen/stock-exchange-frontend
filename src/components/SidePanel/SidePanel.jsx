@@ -12,18 +12,18 @@ import adminPagesData from '../../data/SidePanel/AdminPages';
 
 const SidePanel = () => {
   const [activeItemId, setActiveItemId] = useState(1); // Default to first item
-  const [accountPagesActiveItemId, setAccountPagesActiveItemId] = useState(0);
+  const [adminPagesActiveItemId, setAdminPagesActiveItemId] = useState(0);
   const navigate = useNavigate();
 
   const handleItemClick = (id, path) => {
     setActiveItemId(id);
-    setAccountPagesActiveItemId(0);
+    setAdminPagesActiveItemId(0);
     navigate(path);
   };
 
-  const handleAccountPagesItemClick = (id, path) => {
+  const handleAdminPagesItemClick = (id, path) => {
     setActiveItemId(0);
-    setAccountPagesActiveItemId(id);
+    setAdminPagesActiveItemId(id);
     navigate(path);
   };
 
@@ -72,8 +72,8 @@ const SidePanel = () => {
               key={item.id}
               icon={item.icon}
               optionName={item.optionName}
-              isActive={item.id === accountPagesActiveItemId}
-              onClick={() => handleAccountPagesItemClick(item.id, item.path)}
+              isActive={item.id === adminPagesActiveItemId}
+              onClick={() => handleAdminPagesItemClick(item.id, item.path)}
             />
           ))}
         </div>
