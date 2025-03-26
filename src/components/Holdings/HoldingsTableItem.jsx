@@ -17,7 +17,7 @@ const HoldingsTableItem = ({ code, companyName, quantity, invested, min, max, st
             const percentChange = currentStockPrice * 0.002;
             const randomVariation = (Math.random() * 2 - 1) * percentChange;
             const newStockPrice = currentStockPrice + randomVariation;
-            console.log(newStockPrice);
+            // console.log(newStockPrice);
 
             setCurrentStockPrice(newStockPrice)
 

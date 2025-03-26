@@ -3,6 +3,7 @@ import WatchListTableItem from './Watchlist/WatchListTableItem';
 import api from '../api';
 import { AuthContext } from '../context/AuthContext';
 import usePostData from '../hooks/usePostData';
+import useGetData from '../hooks/useGetData';
 
 const AllStocksTable = () => {
 
@@ -18,12 +19,20 @@ const AllStocksTable = () => {
   
 
   const { addData } = usePostData("/trade/buy");
+  const { data: allSharesData } = useGetData(`/shares/view`);
 
   const filteredStocks = sharesData.filter(stock =>
     stock.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     stock.code.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  useEffect(() => {
+    console.log(allSharesData)
+    setSharesData(allSharesData)
+  }, [allSharesData])
+
+
+  /*
   useEffect(() => {
     const fetchStocks = async () => {
       try {
@@ -41,6 +50,8 @@ const AllStocksTable = () => {
 
     fetchStocks();
   }, []);
+
+  */
 
 
   const openModal = (stockCode) => {
@@ -70,7 +81,7 @@ const AllStocksTable = () => {
     const response = await addData(shareData);
 
     if(response){
-      alert("Order placed successfully")
+      alert(response)
     }
     else{
         alert("Something went wrong");

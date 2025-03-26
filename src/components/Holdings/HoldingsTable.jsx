@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import HoldingsTableItem from './HoldingsTableItem';
 import useGetData from '../../hooks/useGetData';
 import { AuthContext } from '../../context/AuthContext';
+import usePostData from '../../hooks/usePostData';
 
 const HoldingsTable = () => {
 
@@ -13,9 +14,16 @@ const HoldingsTable = () => {
   const [heldSharesData, setHeldSharesData] = useState([]);
 
   const [selectedStock, setSelectedStock] = useState(null);
+  const [transactionType, setTransactionType] = useState("");
+  const [shareToBuy, setShareToBuy] = useState(null); 
+  const [shareToSell, setShareToSell] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [quantityInput, setQuantityInput] = useState("");
 
-  const { data: holdingsData } = useGetData(`/holdings/${userId}`);
+  const { data: holdingsData, refetch:refetchHoldingsData } = useGetData(`/holdings/${userId}`);
   const { data: allSharesData } = useGetData(`/shares/view`);
+  const { addData } = usePostData("/trade/buy");
+  const { addData:sellShare } = usePostData("/trade/sell");
   
   useEffect(() => {
     console.log(holdingsData)
@@ -50,6 +58,67 @@ const HoldingsTable = () => {
   // Toggle stock selection
   const toggleStockSelection = (code) => {
     setSelectedStock(selectedStock === code ? null : code);
+  };
+
+  const handleBuyShare = async ()=>{
+    const shareData = {
+      userId:Number(userId),
+      shareCode: shareToBuy,
+      quantity:Number(quantityInput)
+    }; 
+
+    const response = await addData(shareData);
+
+    if(response){
+      alert(response)
+      setShareToBuy("");
+      refetchHoldingsData();
+    }
+    else{
+      alert("Something went wrong");
+    }
+
+    closeModal();
+  }
+
+  const handleSellShare = async ()=>{
+    const shareData = {
+      userId:Number(userId),
+      shareCode: shareToSell,
+      quantity:Number(quantityInput)
+    }; 
+
+    const response = await sellShare(shareData);
+
+    if(response){
+      alert(response)
+      setShareToSell("");
+      refetchHoldingsData();
+    }
+    else{
+        alert("Something went wrong");
+    }
+
+    closeModal();
+  }
+
+  const openModal = (stockCode, typeOfTransaction) => {
+    setTransactionType(typeOfTransaction);
+    
+    if(typeOfTransaction === "Buy"){
+      setShareToBuy(stockCode);
+    }
+    else if(typeOfTransaction === "Sell"){
+      setShareToSell(stockCode);
+    }
+    // console.log(`Open modal for ${stockCode}`)
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setQuantityInput("");
+    setShareToBuy("");
   };
 
 
@@ -94,8 +163,8 @@ const HoldingsTable = () => {
                 {/* Show buttons if the stock is selected */}
                 {selectedStock === stock.code && (
                   <div className="flex gap-2 my-4 px-4">
-                    <button className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">BUY MORE</button>
-                    <button className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">SELL</button>
+                    <button onClick={()=>openModal(stock.code, "Buy")} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">BUY MORE</button>
+                    <button onClick={()=>openModal(stock.code, "Sell")} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">SELL</button>
                   </div>
                 )}
 
@@ -104,6 +173,30 @@ const HoldingsTable = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-2xl w-96">
+            <h2 className="text-lg font-semibold mb-4 text-[#3A416F]">{shareToBuy || shareToSell}</h2>
+            <input
+              type="number"
+              placeholder="Enter Quantity"
+              className="w-full px-5 py-3 border focus:outline-none focus:ring-1 focus:ring-[#3A416F] text-sm rounded-lg mb-4"
+              value={quantityInput}
+              onChange={(e) => setQuantityInput(e.target.value)}
+            />
+            <div className="flex justify-end space-x-2">
+              <button className="px-4 py-2 bg-[#3A416F] text-white rounded-lg" onClick={closeModal}>Cancel</button>
+              {
+                transactionType === "Buy" ?
+                  <button className="px-4 py-2 bg-[#17C1E8] text-white rounded-lg" onClick={handleBuyShare}>Buy</button>
+                  :
+                  <button className="px-4 py-2 bg-[#17C1E8] text-white rounded-lg" onClick={handleSellShare}>Sell</button> 
+              }
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
