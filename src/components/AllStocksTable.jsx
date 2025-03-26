@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import usePostData from '../hooks/usePostData';
 import useGetData from '../hooks/useGetData';
 import LoadingContainer from './utils/LoadingContainer';
+import { Toaster, toast } from 'sonner'
 
 
 const AllStocksTable = () => {
@@ -63,10 +64,10 @@ const AllStocksTable = () => {
     const response = await addData(shareData);
 
     if(response){
-      alert(response)
+      toast.success(response)
     }
     else{
-        alert("Something went wrong");
+        toast.error("Something went wrong");
     }
 
     closeModal();
@@ -90,7 +91,7 @@ const AllStocksTable = () => {
         });
 
         console.log(response);
-        alert(`${stockCode} ${response.data}`)
+        toast.success(`${stockCode} ${response.data}`)
         
       } catch (error) {
         console.log(error)
@@ -105,6 +106,7 @@ const AllStocksTable = () => {
   }
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
+      <Toaster />
       <div className="flex justify-between px-4">
         <h6 className='text-[#344767] font-bold '>All Stocks</h6>
         <input

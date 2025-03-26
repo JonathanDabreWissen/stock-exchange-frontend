@@ -1,5 +1,4 @@
 import React from 'react'
-
 import growthData from '../../data/StockIndexes/Growth'
 import { GrowthItem } from './GrowthItem'
 

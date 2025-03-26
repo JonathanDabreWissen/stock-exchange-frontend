@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import api from "../../api"; // Import your Axios instance
 import { useNavigate } from "react-router-dom"; // Import if using react-router
 import { AuthContext } from "../../context/AuthContext";
+import { Toaster, toast } from 'sonner'
 
 function SignIn() {
   const [formData, setFormData] = useState({ name: "", password: "" });
@@ -38,7 +39,7 @@ function SignIn() {
       login(userData);
 
       // Display success message
-      alert("Login successful!");
+      toast.success("Login successful!");
       console.log("User data:", response.data);
 
       // Reset form
@@ -54,6 +55,7 @@ function SignIn() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
+      <Toaster/>
       <div className="bg-white p-8 rounded-2xl w-full max-w-sm">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">

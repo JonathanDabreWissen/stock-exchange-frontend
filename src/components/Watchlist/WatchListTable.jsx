@@ -6,6 +6,7 @@ import usePostData from '../../hooks/usePostData';
 import { AuthContext } from '../../context/AuthContext';
 import useGetData from '../../hooks/useGetData';
 import LoadingContainer from '../utils/LoadingContainer';
+import { Toaster, toast } from 'sonner'
 
 const WatchListTable = () => {
   const { user } = useContext(AuthContext);
@@ -20,8 +21,8 @@ const WatchListTable = () => {
   const [quantityInput, setQuantityInput] = useState("");
 
   const { addData } = usePostData("/trade/buy");
-  const { data: allSharesData, loading:allSharesLoading } = useGetData(`/shares/view`);
-  const { data: watchlistSharesData, loading:allWatchlistSharesLoading } = useGetData(`/watchlist/${userId}`);
+  const { data: allSharesData, loading:allSharesLoading, refetch:refetchAllSharesData } = useGetData(`/shares/view`);
+  const { data: watchlistSharesData, loading:allWatchlistSharesLoading, refetch:refetctWishlistData  } = useGetData(`/watchlist/${userId}`);
 
   useEffect(() => {
     setSharesData(allSharesData)
@@ -61,10 +62,9 @@ const WatchListTable = () => {
         });
 
         console.log(response);
-        alert(`${stockCode} ${response.data}`)
-        window.setTimeout(()=>{
-          window.location.reload();
-        }, 500)
+        toast.success(`${stockCode} ${response.data}`)
+        refetchAllSharesData();
+        refetctWishlistData();
         
       } catch (error) {
         console.log(error)
@@ -103,10 +103,10 @@ const WatchListTable = () => {
     const response = await addData(shareData);
 
     if(response){
-      alert("Order placed successfully")
+      toast.success(response)
     }
     else{
-        alert("Something went wrong");
+        toast.error("Something went wrong")
     }
 
     closeModal();
@@ -119,6 +119,7 @@ const WatchListTable = () => {
   
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
+      <Toaster />
       <div className='flex justify-between px-4'>
         <h6 className='text-[#344767] font-bold'>Your Watchlist</h6>
         <input

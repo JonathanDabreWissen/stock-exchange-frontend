@@ -6,6 +6,7 @@ import { IoAdd } from "react-icons/io5";
 import useGetData from "../../hooks/useGetData";
 import { AuthContext } from "../../context/AuthContext";
 import useUpdateData from "../../hooks/useUpdateData";
+import { Toaster, toast } from 'sonner'
 
 const FundsInvoice = () => {
   const { user } = useContext(AuthContext);
@@ -51,10 +52,10 @@ const FundsInvoice = () => {
     
     const response = await updateData(updatedFunds);
     if(response){
-        alert("Funds updated successfully")
+      toast.info("Funds updated successfully")
     }
     else{
-        alert("Insufficient balance");
+      toast.info("Insufficient balance");
     }
 
     refetchBalanceData();
@@ -63,6 +64,7 @@ const FundsInvoice = () => {
 
   return (
     <div className="flex justify-center">
+      <Toaster/>
       <div className="flex flex-col items-center w-[600px]">
         <div className="balance flex flex-col items-center p-5 rounded-2xl bg-white w-full">
           <p className="text-xs text-gray-500 mb-2">Available margin (Cash)</p>

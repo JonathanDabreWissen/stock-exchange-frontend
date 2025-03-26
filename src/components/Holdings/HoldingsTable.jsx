@@ -4,6 +4,7 @@ import useGetData from '../../hooks/useGetData';
 import { AuthContext } from '../../context/AuthContext';
 import usePostData from '../../hooks/usePostData';
 import LoadingContainer from '../utils/LoadingContainer';
+import { Toaster, toast } from 'sonner'
 
 const HoldingsTable = () => {
 
@@ -71,7 +72,7 @@ const HoldingsTable = () => {
     const response = await addData(shareData);
 
     if(response){
-      alert(response)
+      toast.success(response)
       setShareToBuy("");
       refetchHoldingsData();
     }
@@ -92,12 +93,12 @@ const HoldingsTable = () => {
     const response = await sellShare(shareData);
 
     if(response){
-      alert(response)
+      toast.success(response)
       setShareToSell("");
       refetchHoldingsData();
     }
     else{
-        alert("Something went wrong");
+        toast.error("Something went wrong");
     }
 
     closeModal();
@@ -128,6 +129,7 @@ const HoldingsTable = () => {
 
   return (
     <div className='rounded-xl my-7 py-5 bg-white h-[100%]'>
+      <Toaster/>
       <div className="flex justify-between px-4">
         <h6 className='text-[#344767] font-bold '>Your Holdings</h6>
         <input
