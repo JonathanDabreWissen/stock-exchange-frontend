@@ -7,8 +7,11 @@ import { AuthContext } from '../../context/AuthContext';
 import useGetData from '../../hooks/useGetData';
 import LoadingContainer from '../utils/LoadingContainer';
 import { Toaster, toast } from 'sonner'
+import { motion } from 'framer-motion';
 
 const WatchListTable = () => {
+  const MotionDiv = motion.div;
+
   const { user } = useContext(AuthContext);
   const userId = String(user.id);
 
@@ -153,13 +156,17 @@ const WatchListTable = () => {
                   precentageChange={stock.percentageChange}
                   stockExchange={stock.stockExchange || 'BSE'}
                 />
-                {/* Show buttons if the stock is selected */}
-                {selectedStock === stock.code && (
+                <MotionDiv
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={selectedStock === stock.code ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="overflow-hidden"
+                >
                   <div className="flex gap-2 my-4 px-4">
-                    <button onClick={()=>handleRemoveWatchlistClick(stock.code)} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">REMOVE</button>
-                    <button onClick={()=>openModal(stock.code)} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">BUY</button>
+                    <button onClick={(e)=>{e.stopPropagation(); handleRemoveWatchlistClick(stock.code)}} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">REMOVE</button>
+                    <button onClick={(e)=>{e.stopPropagation(); openModal(stock.code)}} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">BUY</button>
                   </div>
-                )}
+                </MotionDiv>
               </div>
             ))}
           </div>

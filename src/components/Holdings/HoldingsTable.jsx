@@ -5,8 +5,11 @@ import { AuthContext } from '../../context/AuthContext';
 import usePostData from '../../hooks/usePostData';
 import LoadingContainer from '../utils/LoadingContainer';
 import { Toaster, toast } from 'sonner'
+import { motion } from 'framer-motion';
 
 const HoldingsTable = () => {
+
+  const MotionDiv = motion.div;
 
   const { user } = useContext(AuthContext);
   const userId = String(user.id);
@@ -16,6 +19,7 @@ const HoldingsTable = () => {
   const [heldSharesData, setHeldSharesData] = useState([]);
 
   const [selectedStock, setSelectedStock] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("");
   const [shareToBuy, setShareToBuy] = useState(null); 
   const [shareToSell, setShareToSell] = useState(null); 
@@ -60,6 +64,7 @@ const HoldingsTable = () => {
   // Toggle stock selection
   const toggleStockSelection = (code) => {
     setSelectedStock(selectedStock === code ? null : code);
+    setIsOpen(!isOpen);
   };
 
   const handleBuyShare = async ()=>{
@@ -167,12 +172,17 @@ const HoldingsTable = () => {
                   stockExchange={stock.stockExchange || "BSE"}
                 />
                 {/* Show buttons if the stock is selected */}
-                {selectedStock === stock.code && (
+                <MotionDiv
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={selectedStock === stock.code ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="overflow-hidden"
+                >
                   <div className="flex gap-2 my-4 px-4">
-                    <button onClick={()=>openModal(stock.code, "Buy")} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">BUY MORE</button>
-                    <button onClick={()=>openModal(stock.code, "Sell")} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold  rounded-md">SELL</button>
+                    <button onClick={(e) =>{e.stopPropagation(); openModal(stock.code, "Buy")}} className="px-3 py-1 bg-[#17C1E8] text-white text-xs font-semibold rounded-md">BUY MORE</button>
+                    <button onClick={(e) =>{e.stopPropagation(); openModal(stock.code, "Sell")}} className="px-3 py-1 bg-[#3A416F] text-white text-xs font-semibold rounded-md">SELL</button>
                   </div>
-                )}
+                </MotionDiv>
 
               </div>
             ))}
