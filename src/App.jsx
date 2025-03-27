@@ -13,6 +13,7 @@ import WebSocketComponent from './components/WebSocketComponent';
 import ListStocks from './pages/Admin/ListStocks';
 import AddStock from './pages/Admin/AddStock';
 import { StompSessionProvider } from 'react-stomp-hooks';
+import ListUsers from './pages/Admin/ListUsers';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -53,9 +54,10 @@ function App() {
                   {/* Admin Routes */}
                   <Route path="/list-stocks" element={<ListStocks/>} />
                   <Route path="/add-stock" element={<AddStock/>} />
+                  <Route path="/list-users" element={<ListUsers/>} />
                 </Route>
                 <Route path="/sign-in" element={
-                  user ? <Navigate to="/web-socket" replace /> : <SingInPage />
+                  user ? <Navigate to="/dashboard" replace /> : <SingInPage />
                 } />
                 <Route path="*" element={<Navigate to="/web-socket" replace />} />
               </Routes>
