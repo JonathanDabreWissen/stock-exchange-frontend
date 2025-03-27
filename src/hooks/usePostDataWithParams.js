@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../api";
 
-const usePostDataWithParams = (baseUrl) => {
+const usePostDataWithParams = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -10,18 +10,19 @@ const usePostDataWithParams = (baseUrl) => {
     setError(null);
 
     try {
-      // Convert params object into a URL query string
+      // Convert params to query string
       const queryParams = new URLSearchParams(params).toString();
-      const urlWithParams = `${baseUrl}?${queryParams}`;
+      const urlWithParams = `${url}?${queryParams}`;
 
       const response = await api.post(urlWithParams, null, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
 
-      return response.data; // Returning response if needed
+      return response.data;
     } catch (err) {
       setError(err.message);
       console.error("Error adding data:", err);
+      throw err;
     } finally {
       setLoading(false);
     }

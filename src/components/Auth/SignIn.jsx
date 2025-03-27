@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import api from "../../api"; // Import your Axios instance
+// import api from "../../api"; // Import your Axios instance
 import { useNavigate } from "react-router-dom"; // Import if using react-router
 import { AuthContext } from "../../context/AuthContext";
 import { Toaster, toast } from 'sonner'
+import usePostDataWithParams from "../../hooks/usePostDataWithParams";
 
 function SignIn() {
   const [formData, setFormData] = useState({ name: "", password: "" });
@@ -14,24 +15,23 @@ function SignIn() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const {  addData:loginUser } = usePostDataWithParams("/api/auth/login")
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await api.post("/api/auth/login", null, {
-        params: {
-          name: formData.name,
-          password: formData.password,
-        },
-        headers: { 
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true"  // Add this
-        },
-      });
+    const params= {
+      name: formData.name,
+      password: formData.password,
+    }
 
+    const response = await loginUser(params)
+    console.log(response)
+
+    if(response){
       // Extract user data from the response
       const userData = {
-        id: response.data.user,
+        id: response.user,
         name: formData.name,
       };
 
@@ -40,7 +40,6 @@ function SignIn() {
 
       // Display success message
       toast.success("Login successful!");
-      console.log("User data:", response.data);
 
       // Reset form
       setFormData({ name: "", password: "" });
@@ -48,9 +47,10 @@ function SignIn() {
 
       // Redirect user after successful login
       navigate("/dashboard");
-    } catch (error) {
-      setError(error.response?.data?.message || "Invalid credentials! Please try again.");
     }
+
+    
+  
   };
 
   return (
