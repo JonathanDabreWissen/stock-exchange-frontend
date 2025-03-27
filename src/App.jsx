@@ -12,7 +12,6 @@ import { AuthContext } from './context/AuthContext';
 import WebSocketComponent from './components/WebSocketComponent';
 import ListStocks from './pages/Admin/ListStocks';
 import AddStock from './pages/Admin/AddStock';
-import TemporaryWebsocketPage from './pages/TemporaryWebsocketPage';
 import { StompSessionProvider } from 'react-stomp-hooks';
 
 function App() {
@@ -65,8 +64,8 @@ function App() {
         </div>
       ) : (
         <Routes>
-          <Route path="/sign-in" element={<SingInPage />} />
-          <Route path="*" element={<Navigate to="/sign-in" replace />} />
+          <Route path="/dashboard" element={<SingInPage />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       )}
     </Router>
