@@ -12,6 +12,8 @@ import { AuthContext } from './context/AuthContext';
 import WebSocketComponent from './components/WebSocketComponent';
 import ListStocks from './pages/Admin/ListStocks';
 import AddStock from './pages/Admin/AddStock';
+import TemporaryWebsocketPage from './pages/TemporaryWebsocketPage';
+import { StompSessionProvider } from 'react-stomp-hooks';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,6 +36,7 @@ function App() {
   }, [isSidebarOpen]);
   
   return (
+    // <StompSessionProvider url='ws://f54b-14-142-39-150.ngrok-free.app/ws'>
     <Router>
       {user ? (
         <div className='flex bg-[#F4F5F6]'>
@@ -53,9 +56,9 @@ function App() {
                   <Route path="/add-stock" element={<AddStock/>} />
                 </Route>
                 <Route path="/sign-in" element={
-                  user ? <Navigate to="/dashboard" replace /> : <SingInPage />
+                  user ? <Navigate to="/web-socket" replace /> : <SingInPage />
                 } />
-                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                <Route path="*" element={<Navigate to="/web-socket" replace />} />
               </Routes>
             </div>
           </div>
@@ -67,6 +70,7 @@ function App() {
         </Routes>
       )}
     </Router>
+    // </StompSessionProvider>
   );
 }
 
