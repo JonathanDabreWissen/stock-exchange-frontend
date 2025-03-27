@@ -4,10 +4,13 @@ import { useSubscription } from "react-stomp-hooks";
 const useWebSocket = (topicUrl) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  console.log(topicUrl);
 
   const handleMessage = useCallback((message) => {
+    console.log(message);
     try {
       const messageBody = JSON.parse(message.body);
+      console.log(messageBody)
       setData(messageBody);
       setError(null);
     } catch (err) {
