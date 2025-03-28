@@ -36,7 +36,7 @@ function App() {
   }, [isSidebarOpen]);
   
   return (
-    // <StompSessionProvider url='ws://f54b-14-142-39-150.ngrok-free.app/ws'>
+    <StompSessionProvider url='ws://f18a-125-18-187-66.ngrok-free.app/ws'>
     <Router>
       {user ? (
         <div className='flex bg-[#F4F5F6]'>
@@ -71,7 +71,7 @@ function App() {
         </Routes>
       )}
     </Router>
-    // </StompSessionProvider>
+    </StompSessionProvider>
   );
 }
 

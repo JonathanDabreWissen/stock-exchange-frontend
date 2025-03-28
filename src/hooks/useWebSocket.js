@@ -7,7 +7,6 @@ const useWebSocket = (topicUrl) => {
   console.log(topicUrl);
 
   const handleMessage = useCallback((message) => {
-    console.log(message);
     try {
       const messageBody = JSON.parse(message.body);
       console.log(messageBody)
