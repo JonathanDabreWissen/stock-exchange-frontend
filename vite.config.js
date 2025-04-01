@@ -7,4 +7,8 @@ export default defineConfig({
   define: {
     global: {},
   },
+  server: {
+    host: '0.0.0.0',  // Expose the server to external network
+    port: 5173,        // Use the same port (or change it if needed)
+  }
 })
